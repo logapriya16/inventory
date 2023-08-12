@@ -41,17 +41,7 @@ export default function InventoryContextProvider({ children }) {
   const filters = (filter) => {
     const temp = datastate.products;
     //    console.log(temp)
-    const temp2 =
-      filter.sortBY.length > 0 ? (
-        <div>
-          {filter.sortBY.name.length > 0
-            ? temp.sort((a, b) => a.name - b.name)
-            : temp}
-            {filter.sortBY.price>0?}
-        </div>
-      ) : (
-        temp3
-      );
+    const temp2 = filter.sortBY.length > 0 ? <div></div> : temp3;
     const temp3 =
       filter.low_stock === true
         ? temp2.filter((item) => item.stock <= 10)
