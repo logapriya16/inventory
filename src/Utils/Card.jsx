@@ -1,14 +1,12 @@
-import React from 'react'
+import React from "react";
 
-export default function Card({item,name}) {
+export default function Card({ item, name }) {
   return (
-    <div>
-
-      <>
-      <h5>{item}</h5>
-      <h3>{name}</h3>
-
-      </>
+    <div className="card">
+      <div >
+        <h5 >{item}</h5>
+        <h3>{name}</h3>
+      </div>
     </div>
-  )
+  );
 }

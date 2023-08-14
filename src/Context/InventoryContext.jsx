@@ -1,7 +1,9 @@
-import React, { createContext, useEffect, useReducer, useState } from "react";
+import React, { createContext,  useReducer, useState } from "react";
 import { inventoryData } from "../data";
 import { datareducer } from "../reducers/datareducer";
+
 export const InventoryContext = createContext();
+
 export default function InventoryContextProvider({ children }) {
   const datainitial = {
     products: inventoryData,
@@ -10,52 +12,44 @@ export default function InventoryContextProvider({ children }) {
     lowstock: 0,
   };
   const [datastate, dataDispatch] = useReducer(datareducer, datainitial);
-  const [filteredProducts, setFilteredProducts] = useState(datastate.products);
   const [filter, setfilter] = useState({
     dept: "",
     low_stock: false,
     sortBY: "",
   });
-  const SetDatas = () => {
-    let temp1 = 0;
-    datastate.products.map((item) => (temp1 += item.stock));
-    let temp2 = 0;
-    datastate.products.map((item) => (temp2 += item.delivered));
-    let temp3 = 0;
-    datastate.products
-      .filter((product) => product.stock <= 10)
-      .map((item) => (temp3 += 1));
-
-    //console.log(temp3);
-    dataDispatch({
-      type: "set_Tot_Stock",
-      payload: temp1,
-    });
-    dataDispatch({ type: "set_Delivered", payload: temp2 });
-    dataDispatch({ type: "set_low_Stock", payload: temp3 });
+  const handleDept = (e) => {
+    setfilter((prev) => ({ ...prev, dept: e }));
   };
-  useEffect(() => {
-    SetDatas();
-  }, []);
+  const handleLowStock = (e) => {
+    if (e.target.checked) {
+      setfilter((prev) => ({ ...prev, low_stock: !filter.low_stock }));
+    } else {
+      setfilter((prev) => ({ ...prev, low_stock: false }));
+    }
+  };
+  const handleCategory = (e) => {
+    setfilter((prev) => ({ ...prev, sortBY: e.target.value }));
+  };
   console.log(filter);
-  const filters = (filter) => {
-    const temp = datastate.products;
-    //    console.log(temp)
-    const temp2 = filter.sortBY.length > 0 ? <div></div> : temp3;
-    const temp3 =
-      filter.low_stock === true
-        ? temp2.filter((item) => item.stock <= 10)
-        : temp4;
+  const deptSort =
+    filter.dept.length > 0
+      ? datastate.products.filter((item) => item.department === filter.dept)
+      : datastate.products;
+  const lowStockSort =
+    filter.low_stock === true
+      ? deptSort.filter((item) => item.stock <= 10)
+      : deptSort;
+  const categorySort =
+    filter.sortBY.length > 0
+      ? filter.sortBY === "name"
+        ? lowStockSort.sort((a, b) => a.name - b.name)
+        : filter.sortBY === "price"
+        ? lowStockSort.sort((a, b) => a.price - b.price)
+        : filter.sortBY === "stock"
+        ? lowStockSort.sort((a, b) => a.stock - b.stock)
+        : lowStockSort
+      : lowStockSort;
 
-    const temp4 =
-      filter.dept.length > 0
-        ? temp3.filter((item) => item.department === filter.dept)
-        : temp3;
-
-    setFilteredProducts(temp2);
-
-    console.log(temp2);
-  };
   const AddNewProduct = (e) => {
     e.preventDefault();
     const resetter = e.target.elements.reset;
@@ -79,11 +73,13 @@ export default function InventoryContextProvider({ children }) {
     <InventoryContext.Provider
       value={{
         datastate,
-        filters,
         setfilter,
         filter,
-        filteredProducts,
         AddNewProduct,
+        handleCategory,
+        handleDept,
+        handleLowStock,
+        categorySort,
       }}
     >
       {children}

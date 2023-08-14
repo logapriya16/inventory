@@ -9,11 +9,11 @@ export default function Dashboard() {
   return (
     <div className="main-div">
       <Sidenav />
-      <>
+      <div className="sub-div">
         <Card item={datastate.totalStock} name={"Total Stock"} />
         <Card item={datastate.totalDelivered} name={"Total Delivered"} />
         <Card item={datastate.lowstock} name={"Low Stock"} />
-      </>
+      </div>
     </div>
   );
 }

@@ -6,18 +6,25 @@ import { useNavigate } from "react-router-dom";
 
 export default function Products() {
   const navigate = useNavigate();
-  const { filters, setfilter } = useContext(InventoryContext);
+  const { handleCategory, handleDept, handleLowStock, filter } =
+    useContext(InventoryContext);
   return (
     <div className="main-div">
       <Sidenav />
       <div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginLeft: "12rem",
+          }}
+        >
           <select
             name=""
             id=""
-            onClick={(e) =>
-              setfilter((prev) => ({ ...prev, dept: e.target.value }))
-            }
+            onClick={(e) => handleDept(e.target.value)}
+            //          onChange={() => filters()}
+            defaultValue={filter.dept}
           >
             <option value="">All Departments</option>
             <option value="Kitchen">Kitchen</option>
@@ -27,28 +34,38 @@ export default function Products() {
           <div>
             <input
               type="checkbox"
+              //              onChange={() => filters()}
               onClick={(e) => {
-                if (e.target.checked) {
-                  setfilter((prev) => ({ ...prev, low_stock: true }));
-                } else {
-                  setfilter((prev) => ({ ...prev, low_stock: false }));
-                }
+                handleLowStock(e);
               }}
+              id="low_stock"
             />
             <label htmlFor="">Low Stock Item</label>
           </div>
           <select
             name=""
             id=""
-            onClick={(e) =>
-              setfilter((prev) => ({ ...prev, sortBY: e.target.value }))
-            }
+            //        onChange={() => filters()}
+            onClick={(e) => {
+              handleCategory(e);
+            }}
           >
             <option value="name">name</option>
             <option value="price">price</option>
             <option value="stock">stock</option>
           </select>
-          <button onClick={() => navigate("/newproduct")}> New</button>
+          <button
+            onClick={() => navigate("/newproduct")}
+            style={{
+              border: "0",
+              backgroundColor: "blue",
+              color: "white",
+              padding: "1rem",
+            }}
+          >
+            {" "}
+            New
+          </button>
         </div>
         <ProductList />
       </div>

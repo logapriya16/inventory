@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Sidenav() {
   const navigate = useNavigate();
   return (
-    <div>
+    <div className="side-nav">
       <ul type="none">
         <li className="nav-items" onClick={() => navigate("/")}>
           Dashboard

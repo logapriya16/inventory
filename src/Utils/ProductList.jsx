@@ -3,14 +3,14 @@ import { InventoryContext } from "../Context/InventoryContext";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductList() {
-  const { datastate, filters, filteredProducts } = useContext(InventoryContext);
+  const {  categorySort } = useContext(InventoryContext);
   const navigate = useNavigate();
-  // console.log(datastate);
+//console.log(datastate,);
   return (
     <div>
-      <table>
+      <table style={{marginLeft:"12rem"}} border="2px solid black">
         <thead>
-          <tr>
+          <tr style={{background:"lightorange"}}>
             <th>Image</th>
             <th>Name</th>
             <th>Description</th>
@@ -20,7 +20,7 @@ export default function ProductList() {
           </tr>
         </thead>
         <tbody>
-          {filteredProducts.map((item) => (
+          {categorySort.map((item) => (
             <tr>
               <td>
                 <img
