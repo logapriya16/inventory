@@ -1,4 +1,4 @@
-import React, { createContext,  useReducer, useState } from "react";
+import React, { createContext, useReducer, useState } from "react";
 import { inventoryData } from "../data";
 import { datareducer } from "../reducers/datareducer";
 
@@ -42,7 +42,11 @@ export default function InventoryContextProvider({ children }) {
   const categorySort =
     filter.sortBY.length > 0
       ? filter.sortBY === "name"
-        ? lowStockSort.sort((a, b) => a.name - b.name)
+        ? lowStockSort.sort((a, b) => {
+            const textA = a.name.trim().toLowerCase();
+            const textB = b.name.trim().toLowerCase();
+            return textA.localeCompare(textB);
+          })
         : filter.sortBY === "price"
         ? lowStockSort.sort((a, b) => a.price - b.price)
         : filter.sortBY === "stock"
